@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import domain.DomainObject;
 import domain.Service;
 import domain.ServiceStatus;
 
@@ -40,8 +41,10 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.setString(1, id);
 		sqlStatement.execute();
 	}
-
-	public void insert(Service service) throws Exception {
+	
+	@Override
+	public void insert(DomainObject obj ) throws Exception {
+		Service service = (Service) obj;
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(insertServiceSS);
 		sqlStatement.setString(1, service.getServiceID());
@@ -54,7 +57,9 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.execute();
 	}
 
-	public void update(Service service) throws Exception {
+	@Override
+	public void update(DomainObject obj) throws Exception {
+		Service service = (Service) obj;
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(updateServiceSS);
 		sqlStatement.setString(1, service.getAddress());

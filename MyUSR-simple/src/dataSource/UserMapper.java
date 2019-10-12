@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 
 import domain.Admin;
 import domain.Customer;
+import domain.DomainObject;
 import domain.Role;
 import domain.User;
 
@@ -35,8 +36,10 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(1, id);
 		sqlStatement.execute();
 	}
-
-	public void insert(User user) throws Exception {
+	
+	@Override
+	public void insert(DomainObject obj) throws Exception {
+		User user = (User) obj;
 		PreparedStatement sqlStatement = null;
 
 		sqlStatement = DBConnection.prepare(insertSS);
@@ -47,14 +50,16 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(5, user.getRole().name());
 		sqlStatement.execute();
 	}
-
-	public void update(User cust) throws Exception {
+	
+	@Override
+	public void update(DomainObject obj) throws Exception {
+		User user = (User) obj;
 		PreparedStatement sqlStatement = null;
 
 		sqlStatement = DBConnection.prepare(updateSS);
-		sqlStatement.setString(1, cust.getName());
-		sqlStatement.setString(2, cust.getPassword());
-		sqlStatement.setString(3, cust.getId());
+		sqlStatement.setString(1, user.getName());
+		sqlStatement.setString(2, user.getPassword());
+		sqlStatement.setString(3, user.getId());
 		sqlStatement.execute();
 	}
 

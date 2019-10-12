@@ -7,7 +7,7 @@ import dataSource.ItemMapper;
 import dataSource.MapperFactory;
 import dataSource.ServiceMapper;
 
-public class Service {
+public class Service implements DomainObject{
 	private ServiceMapper mapper;
 	private static final int COST = 50;
 	private String serviceID, userID, address, description, bill;
@@ -263,6 +263,11 @@ public class Service {
 
 	public void setItemStringList(String itemStringList) {
 		this.itemStringList = itemStringList;
+	}
+
+	@Override
+	public String getId() {
+		return serviceID;
 	}
 
 }

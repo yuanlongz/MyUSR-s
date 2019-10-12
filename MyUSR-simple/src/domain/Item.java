@@ -3,7 +3,7 @@ package domain;
 import dataSource.ItemMapper;
 import dataSource.MapperFactory;
 
-public class Item {
+public class Item implements DomainObject{
 	private int unit;
 	private String name, unitPrice;
 	
@@ -89,6 +89,11 @@ public class Item {
 
 	public void setUnitPrice(String unitPrice) {
 		this.unitPrice = unitPrice;
+	}
+
+	@Override
+	public String getId() {
+		return name;
 	}
 	
 	

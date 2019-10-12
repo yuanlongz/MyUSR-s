@@ -3,6 +3,7 @@ package dataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import domain.DomainObject;
 import domain.Item;
 
 public class ItemMapper implements Mapper {
@@ -29,8 +30,10 @@ public class ItemMapper implements Mapper {
 		sqlStatement.setString(1, name);
 		sqlStatement.execute();
 	}
-
-	public void insert(Item item) throws Exception {
+	
+	@Override
+	public void insert(DomainObject obj) throws Exception {
+		Item item = (Item) obj;
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(insertItemSS);
 		sqlStatement.setString(1, item.getName());
@@ -38,7 +41,9 @@ public class ItemMapper implements Mapper {
 		sqlStatement.execute();
 	}
 
-	public void update(Item item) throws Exception {
+	@Override
+	public void update(DomainObject obj) throws Exception {
+		Item item = (Item) obj;
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(updateNSS);
 		sqlStatement.setString(1, item.getUnitPrice());
@@ -65,4 +70,6 @@ public class ItemMapper implements Mapper {
 
 		return result.getUnitPrice();
 	}
+
+	
 }

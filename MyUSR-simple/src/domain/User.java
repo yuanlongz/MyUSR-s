@@ -3,7 +3,7 @@ package domain;
 import dataSource.MapperFactory;
 import dataSource.UserMapper;
 
-public abstract class User {
+public abstract class User implements DomainObject{
 	private UserMapper mapper;
 	private String name, id, account, password;
 	private Role role;
@@ -101,7 +101,8 @@ public abstract class User {
 			load();
 		return name;
 	}
-
+	
+	@Override
 	public String getId() {
 		return id;
 	}
