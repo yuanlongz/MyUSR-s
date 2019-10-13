@@ -19,7 +19,7 @@ CREATE TABLE service(
 	user_id 	VARCHAR (36) 	NOT NULL,
 	address		VARCHAR (255) 	NOT NULL,
 	item_list	VARCHAR (2000),
-	decription	VARCHAR (2000),
+	description	VARCHAR (2000),
 	status		VARCHAR (20) NOT NULL,
 	bill		VARCHAR (10) NOT NULL,
 	PRIMARY KEY (service_id),

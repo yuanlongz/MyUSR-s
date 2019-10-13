@@ -61,6 +61,9 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(2, user.getPassword());
 		sqlStatement.setString(3, user.getId());
 		sqlStatement.execute();
+		
+		// store the complete user to id_map
+		map.putWithID(user.getId(), user);
 	}
 
 	public static User findWithAccountEmail(String email) throws Exception {
@@ -86,8 +89,6 @@ public class UserMapper implements Mapper {
 			} else
 				throw new Exception("no user with this account find");
 		} else {
-			// TODO: test marker
-			System.out.println("ID map used to find user with account");
 			return user;
 		}
 	}
@@ -118,10 +119,7 @@ public class UserMapper implements Mapper {
 				return user;
 			} else
 				throw new Exception("no user with this account find");
-		} else {
-			// TODO: test marker
-			System.out.println("ID map used to find user with id");
-		}
+		} 
 		return user;
 	}
 

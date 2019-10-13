@@ -54,7 +54,7 @@ public class test {
 			try {
 				Admin adm = (Admin) User.getUserByAccount(adminAccount);
 				for (Service service : adm.getServiceList()) {
-					System.out.println(service.getServiceID());
+					System.out.println(service.getDescription());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

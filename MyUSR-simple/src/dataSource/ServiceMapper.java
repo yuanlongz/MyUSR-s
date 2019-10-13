@@ -11,7 +11,7 @@ import domain.ServiceStatus;
 public class ServiceMapper implements Mapper {
 	private static IdentityMap<Service> map = IdentityMap
 			.getInstance(Service.class);
-	// service table: 1.service_id 2.user_id 3.address 4.item_list 5.decription
+	// service table: 1.service_id 2.user_id 3.address 4.item_list 5.description
 	// 6.status 7.bill
 
 	// find service With user ID Statement String
@@ -31,7 +31,7 @@ public class ServiceMapper implements Mapper {
 			+ "(?, ?, ?, ?, ?, ?, ?)";
 	// update service profile in service table statement String
 	private static final String updateServiceSS = "UPDATE service "
-			+ "SET address = ?, decription = ?, item_list = ?, "
+			+ "SET address = ?, description = ?, item_list = ?, "
 			+ "status = ?, bill = ?" + "WHERE service_id = ?";
 
 	@Override
@@ -55,6 +55,9 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.setString(6, service.getStatus().name());
 		sqlStatement.setString(7, service.getBill());
 		sqlStatement.execute();
+		//update info
+		// store the complete service to id_map
+		map.putWithID(service.getServiceID(), service);
 	}
 
 	@Override
@@ -96,7 +99,7 @@ public class ServiceMapper implements Mapper {
 			rs = sqlStatement.executeQuery();
 			if (rs.next()) {
 				result = new Service(serviceId, rs.getString("user_id"),
-						rs.getString("address"), rs.getString("decription"),
+						rs.getString("address"), rs.getString("description"),
 						rs.getString("bill"), rs.getString("status"),
 						rs.getString("item_list"));
 
@@ -104,10 +107,7 @@ public class ServiceMapper implements Mapper {
 				map.putWithID(serviceId, result);
 			} else
 				throw new Exception("service record does not find with id");
-		} else {
-			// TODO: test marker
-			System.out.println("Find with ID map with service id");
-		}
+		} 
 
 		return result;
 	}

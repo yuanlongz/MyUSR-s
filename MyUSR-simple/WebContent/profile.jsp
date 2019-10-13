@@ -186,10 +186,11 @@ body {
 			}
 		</script>
 	</div>
-
+	<!-- 	logout -->
 	<form action="LogoutControllerServlet" method="post">
 		<input style="position: absolute; top: 10px; right: 10px;"
 			type="submit" value="Logout">
 	</form>
+
 </body>
 </html>

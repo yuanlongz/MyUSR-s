@@ -4,5 +4,6 @@ public enum ServiceStatus {
 	REQUESTED,
 	STARTED,
 	PROCESSING,
-	COMPLETE;
+	COMPLETE,
+	CANCEL;
 }
