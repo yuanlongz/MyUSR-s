@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import domain.Role;
 import domain.User;
+import session.Session;
 
 /**
  * Servlet implementation class LoginControllerServlet
@@ -59,22 +60,14 @@ public class LoginControllerServlet extends HttpServlet {
 				throw new Exception("Wrong password");
 			}
 
-			// register user in session
-			// get the old session and invalidate
-			HttpSession oldSession = request.getSession(false);
-			if (oldSession != null) {
-				oldSession.invalidate();
-			}
-			// generate a new session
-			HttpSession newSession = request.getSession(true);
-			newSession.setAttribute("user", account);
-			// setting session to expiry in 5 mins
-			newSession.setMaxInactiveInterval(5 * 60);
-
-			Cookie userName = new Cookie("user", account);
-			userName.setMaxAge(5*60);
-			response.addCookie(userName);
+			// TODO:register user in session
+			HttpSession newSession = Session.register(request, user.getId());
 			
+			//add Cookie as backup
+			Cookie userId = new Cookie("userId", user.getId());
+			userId.setMaxAge(5 * 60);
+			response.addCookie(userId);
+
 			// redirect user to their pages
 			if (userType == Role.ADMIN) {
 				response.sendRedirect("adminHome.jsp");
