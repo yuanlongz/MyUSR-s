@@ -82,9 +82,6 @@ public class UserMapper implements Mapper {
 					user = new Customer(rs.getString("user_id"));
 				} else
 					throw new Exception("undefined user role");
-
-				// update ID_map
-				map.putWithID(user.getId(), user);
 				return user;
 			} else
 				throw new Exception("no user with this account find");

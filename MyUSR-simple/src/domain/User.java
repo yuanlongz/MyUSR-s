@@ -42,6 +42,10 @@ public abstract class User implements DomainObject{
 	public static User getUserByAccount(String account) throws Exception {
 		return UserMapper.findWithAccountEmail(account);
 	}
+	
+	public static User getUserById(String id) throws Exception {
+		return UserMapper.findWithID(id);
+	}
 
 	/**
 	 * load every empty field with values from DB
