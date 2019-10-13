@@ -31,9 +31,10 @@
 			type="submit" value="Logout">
 	</form>
 	
-<!-- 	will this carry session?  -->
+<!-- 	profile -->
 	<a href="profile.jsp"><img
 		src="https://www.profilegroup.co.nz/wp-content/uploads/2015/12/au.png"
 		style="width: 82px; height: 86px" title="White flower" alt="Flower"></a>
+		
 </body>
 </html>
