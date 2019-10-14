@@ -10,6 +10,11 @@
 <title>LogIn to MyUSR</title>
 </head>
 <body>
+	<!-- back button -->
+	<input type="button" onclick="location.href='index.html'" ; value="Back"
+		style="position: absolute; top: 10px; left: 0px;" />
+	<br>
+	
 	<h1>LogIn to MyUSR</h1>
 	<!-- 	display login error message -->
 	<%

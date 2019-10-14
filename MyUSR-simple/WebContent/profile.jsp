@@ -113,6 +113,8 @@ body {
 		String name = null;
 		String account = null;
 		String psw = null;
+		Role role = null;
+		String backLink = null;
 		if (Session.checkSession(request, response)) {
 			user = User.getUserById(Session.getUserId(request));
 			//choose profile pic
@@ -124,9 +126,21 @@ body {
 			name = user.getName();
 			account = user.getAccount();
 			psw = user.getPassword();
+			role = user.getRole();
+		}
+		
+		if (role.equals(Role.ADMIN)){
+			backLink = "adminHome.jsp";
+		}else if(role.equals(Role.CUSTOMER)){
+			backLink = "customerHome.jsp";
+		}else {
+			backLink = "login.jsp";
 		}
 	%>
-
+	<!-- back button -->
+	<input type="button" onclick="location.href='<%=backLink %>'" ; value="Back"
+		style="position: absolute; top: 10px; left: 0px;" />
+		
 	<!-- display profile -->
 	<h2 style="text-align: center">User Profile Card</h2>
 	<!-- 	update render info -->
@@ -186,11 +200,6 @@ body {
 			}
 		</script>
 	</div>
-	<!-- 	logout -->
-	<form action="LogoutControllerServlet" method="post">
-		<input style="position: absolute; top: 10px; right: 10px;"
-			type="submit" value="Logout">
-	</form>
 
 </body>
 </html>

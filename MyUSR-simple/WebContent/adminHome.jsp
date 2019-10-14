@@ -39,10 +39,17 @@
 			userName = User.getUserById(userId).getName();
 		}
 	%>
+	<br>
 	<h3>
 		Hi
 		<%=userName%>, Login successful. Your Session ID=<%=Session.getSessionId(request)%></h3>
+	
+	<!-- back button -->
+	<input type="button" onclick="location.href='login.jsp'" ; value="Back"
+		style="position: absolute; top: 10px; left: 0px;" />
 
+
+	<!-- log out -->
 	<form action="LogoutControllerServlet" method="post">
 		<input style="position: absolute; top: 10px; right: 10px;"
 			type="submit" value="Logout">
@@ -56,7 +63,7 @@
 				style="width: 82px; height: 86px;">
 				<figcaption>My Profile</figcaption></a>
 		</div>
-		
+
 		<!-- customer Profile -->
 		<div class="column">
 			<a href="manageUsers.jsp"><img
@@ -64,7 +71,7 @@
 				style="width: 82px; height: 86px;">
 				<figcaption>Manage Users</figcaption></a>
 		</div>
-		
+
 		<!-- 	service list -->
 		<div class="column">
 			<a href="adminServiceList.jsp"><img
@@ -72,7 +79,7 @@
 				style="width: 82px; height: 86px;">
 				<figcaption>Orders</figcaption></a>
 		</div>
-		
+
 		<!-- Item price -->
 		<div class="column">
 			<a href="managePrice.jsp"><img

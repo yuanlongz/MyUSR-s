@@ -13,7 +13,11 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Users/JIMMY/Desktop/MyUSR-s/postgresql-42.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/JIMMY/Desktop/MyUSR-s/postgresql-42.2.6.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="C:/Users/JIMMY/Desktop/MyUSR-s/jcl-over-slf4j-1.6.4.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>

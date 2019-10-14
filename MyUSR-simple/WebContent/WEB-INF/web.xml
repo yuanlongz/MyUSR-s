@@ -3,25 +3,21 @@
   <display-name>MyUSR-simple</display-name>
   <listener>
     <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-</listener>
-
-
-
-<filter>
+  </listener>
+  <filter>
     <filter-name>ShiroFilter</filter-name>
     <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-</filter>
-
-<filter-mapping>
+  </filter>
+  <filter-mapping>
     <filter-name>ShiroFilter</filter-name>
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>ERROR</dispatcher>
-</filter-mapping>
+  </filter-mapping>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file> 
+    <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>

@@ -57,7 +57,6 @@ public class LoginControllerServlet extends HttpServlet {
 				password);
 		token.setRememberMe(true);
 		Subject currentUser = SecurityUtils.getSubject();
-		
 
 		try {
 			User user = User.getUserByAccount(account);
@@ -75,17 +74,19 @@ public class LoginControllerServlet extends HttpServlet {
 			Cookie userId = new Cookie("userId", user.getId());
 			userId.setMaxAge(5 * 60);
 			response.addCookie(userId);
-			
-			//shiro version
-			//AppSession.init(user);
+
+			// shiro version
+			// AppSession.init(user);
 
 			// redirect user to their pages
 			if (userType == Role.ADMIN) {
 				response.sendRedirect("adminHome.jsp");
 			} else if (userType == Role.CUSTOMER) {
-				response.sendRedirect("customerHome.jsp");
+				// TODO: due to submission, did not able to implement customer
+				// home, use admin home
+				response.sendRedirect("adminHome.jsp");
 			}
-			
+
 		} catch (Exception e) {
 			// show the page with error information
 			request.setAttribute("errorMessage", e.getMessage());

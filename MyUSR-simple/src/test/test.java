@@ -23,30 +23,30 @@ public class test {
 	public static void main(String[] args) {
 		// Test domain
 		// Test Customer
-		if (false) {
+		if (true) {
 			Customer cst = new Customer("Tim", custAccount, "1");
 			// Add
-			//cst.add();
+			cst.add();
 			// Remove
 			//cst.remove(user_id);
 			//cst.delete();
 			// View
-			try {
-				cst = (Customer) User.getUserByAccount(custAccount);
-				for (Service service : cst.getServiceList()) {
-					System.out.println(service.getServiceID());
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				cst = (Customer) User.getUserByAccount(custAccount);
+//				for (Service service : cst.getServiceList()) {
+//					System.out.println(service.getServiceID());
+//				}
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			// Update
 			//cst.setPassword("2");
 			//cst.update();
 		}
 
 		// Test Admin
-		if (true) {
+		if (false) {
 			// Add
 			// Remove
 			// View

@@ -150,7 +150,11 @@ body {
 			//serviceList = user.getServiceList();
 		}
 	%>
-	<h2>Service List</h2>
+		<!-- back button -->
+	<input type="button" onclick="location.href='adminHome.jsp'" ; value="Back"
+		style="position: absolute; top: 10px; left: 0px;" />
+		
+	<br><h2>Service List</h2>
 	<hr />
 	<br />
 	<div>
