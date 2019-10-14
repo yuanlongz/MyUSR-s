@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import domain.ServiceStatus;
 
-public class ServiceDTO {
+public class ServiceDTO extends DTOObject{
 	private String serviceID, userID, address, description, bill;
 	private ServiceStatus status;
 	private ArrayList<ItemDTO> itemList;
@@ -25,19 +25,6 @@ public class ServiceDTO {
 		this.bill = bill;
 		this.status = status;
 		this.itemList = itemList;
-	}
-	
-	public static void toXML(ServiceDTO serviceDTO, OutputStream outputStream) {
-		XMLEncoder encoder = new XMLEncoder(outputStream);
-		encoder.writeObject(serviceDTO);
-		encoder.close();
-	}
-	
-	public static ServiceDTO fromXML(InputStream inputStream) {
-		XMLDecoder decoder = new XMLDecoder(inputStream);
-		ServiceDTO result = (ServiceDTO) decoder.readObject();
-		decoder.close();
-		return result;
 	}
 	
 	//getters and setters
@@ -82,6 +69,11 @@ public class ServiceDTO {
 	}
 	public void setItemList(ArrayList<ItemDTO> itemList) {
 		this.itemList = itemList;
+	}
+
+	@Override
+	public String getId() {
+		return serviceID;
 	}
 	
 	

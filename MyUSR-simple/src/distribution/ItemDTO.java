@@ -1,11 +1,6 @@
 package distribution;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-public class ItemDTO {
+public class ItemDTO extends DTOObject{
 	private int unit;
 	private String name, unitPrice;
 	
@@ -14,19 +9,6 @@ public class ItemDTO {
 		this.unit = unit;
 		this.unitPrice = price;
 		this.name = name;
-	}
-
-	public static void toXML(ItemDTO itemDTO, OutputStream outputStream) {
-		XMLEncoder encoder = new XMLEncoder(outputStream);
-		encoder.writeObject(itemDTO);
-		encoder.close();
-	}
-	
-	public static ItemDTO fromXML(InputStream inputStream) {
-		XMLDecoder decoder = new XMLDecoder(inputStream);
-		ItemDTO result = (ItemDTO) decoder.readObject();
-		decoder.close();
-		return result;
 	}
 	
 	
@@ -53,6 +35,12 @@ public class ItemDTO {
 
 	public String getUnitPrice() {
 		return unitPrice;
+	}
+
+
+	@Override
+	public String getId() {
+		return name;
 	}
 	
 	

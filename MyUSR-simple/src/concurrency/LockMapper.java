@@ -2,14 +2,15 @@ package concurrency;
 
 import dataSource.ItemMapper;
 import dataSource.Mapper;
+import distribution.DTOObject;
 import domain.DomainObject;
 import domain.User;
 import session.Session;
 
-public class LockingMapper implements Mapper {
+public class LockMapper implements Mapper {
 	private Mapper mapper;
 	
-	public LockingMapper(Mapper mapper) {
+	public LockMapper(Mapper mapper) {
 		this.mapper = mapper;
 	}
 	
@@ -35,6 +36,7 @@ public class LockingMapper implements Mapper {
 		return result;
 	}
 	
+	
 	@Override
 	public void delete(String id) throws Exception {
 		User user = null;
@@ -55,6 +57,7 @@ public class LockingMapper implements Mapper {
 		LockManager.getInstance().releaseWriteLock(user);
 
 	}
+
 
 	@Override
 	public void insert(DomainObject obj) throws Exception {
