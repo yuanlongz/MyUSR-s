@@ -8,7 +8,7 @@ public class DBConnection {
 	private static final String DB_CONNECTION = "jdbc:postgresql://localhost:5432/myusr";
 	private static final String DB_USER = "postgres";
 	private static final String DB_PASSWORD = "87807981";
-	private static Connection conn;
+	private static Connection conn = null;
 	// private static final String DB_CONNECTION
 	// ="postgres://hljjogodtgfcci:fed44adf1778b0c71930ff909abd4d4e2fcaf95b02448e581d10841fdf00d8a9@ec2-54-235-96-48.compute-1.amazonaws.com:5432/dbcjvhfb6diug8";
 	// private static final String DB_CONNECTION =
@@ -33,10 +33,9 @@ public class DBConnection {
 		PreparedStatement preparedStatement = null;
 		try {
 			Connection dbConnection = getDBConnection();
-			// For roll back or undo a transaction if it is not completed
-			// appropriately.
-			dbConnection.setAutoCommit(false);
 
+			getDBConnection();
+			conn.setAutoCommit(false);
 			preparedStatement = dbConnection.prepareStatement(stm,
 					Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
@@ -50,11 +49,14 @@ public class DBConnection {
 		try {
 			conn = DriverManager.getConnection(DB_CONNECTION, DB_USER,
 					DB_PASSWORD);
+			// For roll back or undo a transaction if it is not completed
+			// appropriately.
+			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return conn;
+		 return conn;
 	}
 
 	public static void closeConnection() {
@@ -65,7 +67,7 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void rollBack() {
 		try {
 			conn.rollback();

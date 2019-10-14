@@ -73,14 +73,6 @@
 				<figcaption>Orders</figcaption></a>
 		</div>
 		
-		<!-- 	service history -->
-		<div class="column">
-			<a href="adminServiceList.jsp"><img
-				src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdU3g2jYiqEF6AeHpEh5c8MPu0YoqQjx7iHbA5NHMMMjaKF-Sy
-				style="width: 82px; height: 86px;">
-				<figcaption>Orders</figcaption></a>
-		</div>
-		
 		<!-- Item price -->
 		<div class="column">
 			<a href="managePrice.jsp"><img

@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+
 import domain.Role;
 import domain.User;
+import security.AppSession;
 import session.Session;
 
 /**
@@ -45,11 +50,14 @@ public class LoginControllerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// check session: if registered, then directly redirect, don't need to
-		// double login
-		// , redirect to different pages
 		String account = request.getParameter("account");
 		String password = request.getParameter("passWord");
+		// security autherization shiro
+		UsernamePasswordToken token = new UsernamePasswordToken(account,
+				password);
+		token.setRememberMe(true);
+		Subject currentUser = SecurityUtils.getSubject();
+		
 
 		try {
 			User user = User.getUserByAccount(account);
@@ -62,11 +70,14 @@ public class LoginControllerServlet extends HttpServlet {
 
 			// TODO:register user in session
 			HttpSession newSession = Session.register(request, user.getId());
-			
-			//add Cookie as backup
+
+			// add Cookie as backup
 			Cookie userId = new Cookie("userId", user.getId());
 			userId.setMaxAge(5 * 60);
 			response.addCookie(userId);
+			
+			//shiro version
+			//AppSession.init(user);
 
 			// redirect user to their pages
 			if (userType == Role.ADMIN) {
@@ -74,6 +85,7 @@ public class LoginControllerServlet extends HttpServlet {
 			} else if (userType == Role.CUSTOMER) {
 				response.sendRedirect("customerHome.jsp");
 			}
+			
 		} catch (Exception e) {
 			// show the page with error information
 			request.setAttribute("errorMessage", e.getMessage());

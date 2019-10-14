@@ -1,3 +1,6 @@
+<%@page import="security.AppSession"%>
+<%@page import="domain.User"%>
+<%@page import="domain.Role"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -8,17 +11,42 @@
 </head>
 <body>
 	<h1>LogIn to MyUSR</h1>
+	<!-- 	display login error message -->
+	<%
+		if (request.getAttribute("errorMessage") != null) {
+	%>
+	<h5 style="color: red"><%=request.getAttribute("errorMessage")%></h5>
+	<%
+		}
+	%>
 	<form action="LoginControllerServlet" method="post">
+
+
+		<!-- 		login crediential check -->
 		<%
-			if (request.getAttribute("errorMessage") != null) {
+			if (!AppSession.isAuthenticated()) {
 		%>
-		<h5 style="color: red"><%=request.getAttribute("errorMessage")%></h5>
-		<%
-			}
-		%>
-		Email   : <input type="email" name="account" required><br>
-		PassWord: <input type="password" name="passWord" required>
-		<br> <input type="submit" value="Login">
+		Email : <input type="email" name="account" required><br>
+		PassWord: <input type="password" name="passWord" required> <br>
+		<input type="submit" value="Login">
 	</form>
+	<%
+		} else {
+			String redirect = null;
+			User user = AppSession.getUser();
+			if (user.getRole().equals(Role.ADMIN)) {
+				redirect = "adminHome";
+			} else if (user.getRole().equals(Role.CUSTOMER)) {
+				redirect = "customerHome";
+			}
+	%>
+	You are already logged in as<%=user.getName()%>.
+	<div class='container'>
+		<a href=<%=redirect%>>GO DashBoard</a>
+	</div>
+
+	<%
+		}
+	%>
 </body>
 </html>
