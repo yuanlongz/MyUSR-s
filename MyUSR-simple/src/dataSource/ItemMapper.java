@@ -2,6 +2,7 @@ package dataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import domain.DomainObject;
 import domain.Item;
@@ -28,10 +29,14 @@ public class ItemMapper implements Mapper {
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(delItemWithNSS);
 		sqlStatement.setString(1, name);
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
-	
+
 	@Override
 	public void insert(DomainObject obj) throws Exception {
 		Item item = (Item) obj;
@@ -39,7 +44,11 @@ public class ItemMapper implements Mapper {
 		sqlStatement = DBConnection.prepare(insertItemSS);
 		sqlStatement.setString(1, item.getName());
 		sqlStatement.setString(2, item.getUnitPrice());
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
 
@@ -50,7 +59,11 @@ public class ItemMapper implements Mapper {
 		sqlStatement = DBConnection.prepare(updateNSS);
 		sqlStatement.setString(1, item.getUnitPrice());
 		sqlStatement.setString(2, item.getName());
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
 
@@ -68,12 +81,10 @@ public class ItemMapper implements Mapper {
 			} else
 				throw new Exception("no such item exist in the DB");
 		} else {
-			// TODO: test marker
-			System.out.println("ID map used to find item with name");
+			result = item.getUnitPrice();
 		}
 		DBConnection.closeConnection();
-		result = item.getUnitPrice();
-		return result;
-		
+				return result;
+
 	}
 }

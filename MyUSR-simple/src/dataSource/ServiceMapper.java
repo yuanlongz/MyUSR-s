@@ -2,6 +2,7 @@ package dataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import domain.DomainObject;
@@ -39,12 +40,16 @@ public class ServiceMapper implements Mapper {
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(delServiceWithIDSS);
 		sqlStatement.setString(1, id);
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
-	
+
 	@Override
-	public void insert(DomainObject obj ) throws Exception {
+	public void insert(DomainObject obj) throws Exception {
 		Service service = (Service) obj;
 		PreparedStatement sqlStatement = null;
 		sqlStatement = DBConnection.prepare(insertServiceSS);
@@ -55,12 +60,16 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.setString(5, service.getDescription());
 		sqlStatement.setString(6, service.getStatus().name());
 		sqlStatement.setString(7, service.getBill());
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
-		//update info
+		// update info
 		// store the complete service to id_map
 		map.putWithID(service.getServiceID(), service);
-		
+
 	}
 
 	@Override
@@ -74,7 +83,11 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.setString(4, service.getStatus().name());
 		sqlStatement.setString(5, service.getBill());
 		sqlStatement.setString(6, service.getServiceID());
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
 
@@ -112,7 +125,7 @@ public class ServiceMapper implements Mapper {
 				map.putWithID(serviceId, result);
 			} else
 				throw new Exception("service record does not find with id");
-		} 
+		}
 		DBConnection.closeConnection();
 		return result;
 	}

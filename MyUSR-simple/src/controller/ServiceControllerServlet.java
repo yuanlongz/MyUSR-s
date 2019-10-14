@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import concurrency.LockManager;
 import domain.Role;
 import domain.Service;
 import domain.ServiceStatus;
@@ -26,7 +27,6 @@ public class ServiceControllerServlet extends HttpServlet {
 	 */
 	public ServiceControllerServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -35,9 +35,37 @@ public class ServiceControllerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO: update service details
-		String serviceId = Session.getTargetId(request.getSession());
+
+		if (Session.checkSession(request, response)) {
+			User user = null;
+			// get lock manager
+			try {
+				user = User.getUserById(Session.getUserId(request));
+				LockManager.getInstance().acquireWritelock(user);
+			} catch (InterruptedException e) {
+				System.out.println(
+						"Acquiring Write lock when updating a service failed :(");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			//TODO: check action and use different methods 
+			updateService(request, response);
+			
+			//release lock
+			LockManager.getInstance().releaseWriteLock(user);
+			
+		}
+
+	}
+
+	private void updateService(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// get onject from session
+		String serviceId = Session.getTargetId(request);
 		Service service = Service.findByServiceId(serviceId);
+
+		// update service details
 		String address = request.getParameter("address");
 		String item_list = request.getParameter("item_list");
 		String description = request.getParameter("description");
@@ -50,29 +78,31 @@ public class ServiceControllerServlet extends HttpServlet {
 			service.setDescription(description);
 		if (status != null)
 			service.setStatus(ServiceStatus.valueOf(status));
-		System.out.printf("address: %s, item_list:%s description:%s status:%s\n",
-				address, item_list, description, status);
-		//complicate business logic when service is canceled or completed
-		if(status == ServiceStatus.CANCEL.name()) {
+
+		// TODO: remove
+		System.out.printf(
+				"address: %s, item_list:%s description:%s status:%s\n", address,
+				item_list, description, status);
+
+		// complicate business logic when service is canceled or completed
+		if (status == ServiceStatus.CANCEL.name()) {
 			ServiceLogic.cancelService(service);
-		}else if (status == ServiceStatus.COMPLETE.name()) {
+		} else if (status == ServiceStatus.COMPLETE.name()) {
 			ServiceLogic.completeService(service);
-		}else {
+		} else {
 			service.update();
 		}
-		
+
 		// send back to different pages based on customer or admin view
-		String userId = Session.getUserId(request.getSession());
+		String userId = Session.getUserId(request);
 		try {
 			User user = User.getUserById(userId);
 			if (user.getRole() == Role.ADMIN) {
-//				response.sendRedirect("adminServiceList.jsp");
-				 request.getRequestDispatcher("adminServiceList.jsp")
-				 .forward(request, response);
+				request.getRequestDispatcher("adminServiceList.jsp")
+						.forward(request, response);
 			} else if (user.getRole() == Role.CUSTOMER) {
-//				response.sendRedirect("customerServiceList.jsp");s
-				 request.getRequestDispatcher("customerServiceList.jsp")
-				 .forward(request, response);
+				request.getRequestDispatcher("customerServiceList.jsp")
+						.forward(request, response);
 			}
 		} catch (Exception e) {
 			request.setAttribute("errorMessage",

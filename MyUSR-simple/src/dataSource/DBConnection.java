@@ -33,6 +33,10 @@ public class DBConnection {
 		PreparedStatement preparedStatement = null;
 		try {
 			Connection dbConnection = getDBConnection();
+			// For roll back or undo a transaction if it is not completed
+			// appropriately.
+			dbConnection.setAutoCommit(false);
+
 			preparedStatement = dbConnection.prepareStatement(stm,
 					Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
@@ -58,6 +62,15 @@ public class DBConnection {
 			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void rollBack() {
+		try {
+			conn.rollback();
+		} catch (SQLException e) {
+			System.out.println("Rollback failed.");
 			e.printStackTrace();
 		}
 	}

@@ -114,7 +114,7 @@ body {
 		String account = null;
 		String psw = null;
 		if (Session.checkSession(request, response)) {
-			user = User.getUserById(Session.getUserId(session));
+			user = User.getUserById(Session.getUserId(request));
 			//choose profile pic
 			if (user.getRole().equals(Role.ADMIN)) {
 				pic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY_7DqY7TbUBxG8Qo4U_3UCK0Z3lX7EwNJcIvBr3fp_h1I4clNNQ";

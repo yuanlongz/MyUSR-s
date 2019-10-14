@@ -2,6 +2,7 @@ package dataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import domain.Admin;
 import domain.Customer;
@@ -34,10 +35,14 @@ public class UserMapper implements Mapper {
 		sqlStatement = null;
 		sqlStatement = DBConnection.prepare(delWithID);
 		sqlStatement.setString(1, id);
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
-	
+
 	@Override
 	public void insert(DomainObject obj) throws Exception {
 		User user = (User) obj;
@@ -49,10 +54,14 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(3, user.getAccount());
 		sqlStatement.setString(4, user.getPassword());
 		sqlStatement.setString(5, user.getRole().name());
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 	}
-	
+
 	@Override
 	public void update(DomainObject obj) throws Exception {
 		User user = (User) obj;
@@ -62,11 +71,15 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(1, user.getName());
 		sqlStatement.setString(2, user.getPassword());
 		sqlStatement.setString(3, user.getId());
-		sqlStatement.execute();
+		try {
+			sqlStatement.execute();
+		} catch (SQLException e) {
+			DBConnection.rollBack();
+		}
 		DBConnection.closeConnection();
 		// store the complete user to id_map
 		map.putWithID(user.getId(), user);
-		
+
 	}
 
 	public static User findWithAccountEmail(String email) throws Exception {
@@ -121,7 +134,7 @@ public class UserMapper implements Mapper {
 				return user;
 			} else
 				throw new Exception("no user with this account find");
-		} 
+		}
 		DBConnection.closeConnection();
 		return user;
 	}

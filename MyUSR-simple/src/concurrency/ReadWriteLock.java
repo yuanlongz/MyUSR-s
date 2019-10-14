@@ -9,7 +9,7 @@ public class ReadWriteLock {
 
 	private Map<Thread, Integer> readingThreads = new HashMap<>();
 
-	private int writeAccess = 0;
+	private int writeAccesses = 0;
 	private int writeRequests = 0;
 	private Thread writingThread = null;
 
@@ -36,11 +36,11 @@ public class ReadWriteLock {
 	synchronized void lockWrite() throws InterruptedException {
 		writeRequests++;
 		Thread callingThread = Thread.currentThread();
-		while (!canGrantReadAccess(callingThread)) {
+		while (!canGrantWriteAccess(callingThread)) {
 			wait();
 		}
 		writeRequests--;
-		writeAccess++;
+		writeAccesses++;
 		writingThread = callingThread;
 	}
 
@@ -49,8 +49,8 @@ public class ReadWriteLock {
 			throw new IllegalMonitorStateException(
 					"Thread does not hols the write lock");
 		}
-		writeAccess--;
-		if (writeAccess == 0) {
+		writeAccesses--;
+		if (writeAccesses == 0) {
 			writingThread = null;
 		}
 		notifyAll();

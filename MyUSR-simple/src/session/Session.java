@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;;
 public class Session {
 	public static final String USER_ATTRIBUTE_ID = "user_id";
 	public static final String Target_ATTRIBUTE_ID = "target_id";
+	private static String sessionID, userId, targetId;
 
 	private HttpSession httpSession;
 
@@ -35,18 +36,20 @@ public class Session {
 		return newSession;
 	}
 
-	public static String getUserId(HttpSession session) {
-		return (String) (session.getAttribute(USER_ATTRIBUTE_ID));
+	public static String getUserId(HttpServletRequest request) {
+		return (String) (request.getSession().getAttribute(USER_ATTRIBUTE_ID));
 	}
 
 	/**
 	 * handle secondary id, e.g service id/user_id
 	 * 
-	 * @param session
+	 * @param request
 	 * @return
 	 */
-	public static String getTargetId(HttpSession session) {
-		return (String) (session.getAttribute(Target_ATTRIBUTE_ID));
+	public static String getTargetId(HttpServletRequest request) {
+
+		return (String) (request.getSession()
+				.getAttribute(Target_ATTRIBUTE_ID));
 	}
 
 	public static String getSessionId(HttpServletRequest request) {
@@ -70,7 +73,7 @@ public class Session {
 			HttpServletResponse response) throws ServletException, IOException {
 		// if at any stage session expires, redirect the user back to the log in
 		// page
-		if (getUserId(request.getSession()) == null) {
+		if (getUserId(request) == null) {
 			request.setAttribute("errorMessage", "Invalid Session");
 			request.getRequestDispatcher("login.jsp").forward(request,
 					response);
@@ -79,8 +82,29 @@ public class Session {
 			// refresh expiring time
 			HttpSession session = request.getSession(false);
 			session.setMaxInactiveInterval(5 * 60);
+			update(request);
 			return true;
 		}
 	}
+
+	private static void update(HttpServletRequest request) {
+		sessionID = getSessionId(request);
+		userId = getUserId(request);
+		targetId = getTargetId(request);
+	}
+
+	public static String getSessionID() {
+		return sessionID;
+	}
+
+	public static String getUserId() {
+		return userId;
+	}
+
+	public static String getTargetId() {
+		return targetId;
+	}
+	
+	
 
 }

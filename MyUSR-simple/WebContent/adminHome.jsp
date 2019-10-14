@@ -35,7 +35,7 @@
 		//TODO: session update security
 		String userName = null;
 		if (Session.checkSession(request, response)) {
-			String userId = Session.getUserId(session);
+			String userId = Session.getUserId(request);
 			userName = User.getUserById(userId).getName();
 		}
 	%>

@@ -146,7 +146,7 @@ body {
 		Admin user = null;
 		ArrayList<Service> serviceList = new ArrayList<Service>();
 		if (Session.checkSession(request, response)) {
-			user = (Admin) User.getUserById(Session.getUserId(session));
+			user = (Admin) User.getUserById(Session.getUserId(request));
 			//serviceList = user.getServiceList();
 		}
 	%>
