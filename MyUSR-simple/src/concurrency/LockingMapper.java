@@ -13,9 +13,9 @@ public class LockingMapper implements Mapper {
 		this.mapper = mapper;
 	}
 	
-	public void findPrice (String name) throws Exception {
+	public String findPrice (String name) throws Exception {
+		String result;
 		User user = null;
-		ItemMapper itemMapper = (ItemMapper) mapper;
 		// get lock manager
 		try {
 			user = User.getUserById(Session.getUserId());
@@ -27,10 +27,12 @@ public class LockingMapper implements Mapper {
 			e.printStackTrace();
 		}
 		
-		itemMapper.findPrice(name);
+		result = ItemMapper.findPrice(name);
 		
 		//release lock
 		LockManager.getInstance().releaseWriteLock(user);
+		
+		return result;
 	}
 	
 	@Override
