@@ -40,6 +40,7 @@ public class ServiceMapper implements Mapper {
 		sqlStatement = DBConnection.prepare(delServiceWithIDSS);
 		sqlStatement.setString(1, id);
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 	
 	@Override
@@ -55,9 +56,11 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.setString(6, service.getStatus().name());
 		sqlStatement.setString(7, service.getBill());
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 		//update info
 		// store the complete service to id_map
 		map.putWithID(service.getServiceID(), service);
+		
 	}
 
 	@Override
@@ -72,6 +75,7 @@ public class ServiceMapper implements Mapper {
 		sqlStatement.setString(5, service.getBill());
 		sqlStatement.setString(6, service.getServiceID());
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 
 	public static ArrayList<Service> findWithUserID(String userId)
@@ -86,6 +90,7 @@ public class ServiceMapper implements Mapper {
 			String serviceId = rs.getString("service_id");
 			result.add(new Service(serviceId));
 		}
+		DBConnection.closeConnection();
 		return result;
 	}
 
@@ -108,7 +113,7 @@ public class ServiceMapper implements Mapper {
 			} else
 				throw new Exception("service record does not find with id");
 		} 
-
+		DBConnection.closeConnection();
 		return result;
 	}
 
@@ -124,8 +129,8 @@ public class ServiceMapper implements Mapper {
 			String serviceId = rs.getString("service_id");
 			result.add(new Service(serviceId));
 		}
+		DBConnection.closeConnection();
 		return result;
-
 	}
 
 }

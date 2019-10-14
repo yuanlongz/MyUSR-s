@@ -11,6 +11,7 @@ import domain.Role;
 import domain.Service;
 import domain.ServiceStatus;
 import domain.User;
+import service.ServiceLogic;
 import session.Session;
 
 /**
@@ -51,19 +52,27 @@ public class ServiceControllerServlet extends HttpServlet {
 			service.setStatus(ServiceStatus.valueOf(status));
 		System.out.printf("address: %s, item_list:%s description:%s status:%s\n",
 				address, item_list, description, status);
-		service.update();
+		//complicate business logic when service is canceled or completed
+		if(status == ServiceStatus.CANCEL.name()) {
+			ServiceLogic.cancelService(service);
+		}else if (status == ServiceStatus.COMPLETE.name()) {
+			ServiceLogic.completeService(service);
+		}else {
+			service.update();
+		}
+		
 		// send back to different pages based on customer or admin view
 		String userId = Session.getUserId(request.getSession());
 		try {
 			User user = User.getUserById(userId);
 			if (user.getRole() == Role.ADMIN) {
-				response.sendRedirect("adminServiceList.jsp");
-				// request.getRequestDispatcher("adminServiceList.jsp")
-				// .forward(request, response);
+//				response.sendRedirect("adminServiceList.jsp");
+				 request.getRequestDispatcher("adminServiceList.jsp")
+				 .forward(request, response);
 			} else if (user.getRole() == Role.CUSTOMER) {
-				response.sendRedirect("customerServiceList.jsp");
-				// request.getRequestDispatcher("customerServiceList.jsp")
-				// .forward(request, response);
+//				response.sendRedirect("customerServiceList.jsp");s
+				 request.getRequestDispatcher("customerServiceList.jsp")
+				 .forward(request, response);
 			}
 		} catch (Exception e) {
 			request.setAttribute("errorMessage",

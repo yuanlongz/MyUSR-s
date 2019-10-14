@@ -35,6 +35,7 @@ public class UserMapper implements Mapper {
 		sqlStatement = DBConnection.prepare(delWithID);
 		sqlStatement.setString(1, id);
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 	
 	@Override
@@ -49,6 +50,7 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(4, user.getPassword());
 		sqlStatement.setString(5, user.getRole().name());
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 	
 	@Override
@@ -61,9 +63,10 @@ public class UserMapper implements Mapper {
 		sqlStatement.setString(2, user.getPassword());
 		sqlStatement.setString(3, user.getId());
 		sqlStatement.execute();
-		
+		DBConnection.closeConnection();
 		// store the complete user to id_map
 		map.putWithID(user.getId(), user);
+		
 	}
 
 	public static User findWithAccountEmail(String email) throws Exception {
@@ -85,12 +88,11 @@ public class UserMapper implements Mapper {
 					user = new Customer(rs.getString("user_id"));
 				} else
 					throw new Exception("undefined user role");
-				return user;
 			} else
 				throw new Exception("no user with this account find");
-		} else {
-			return user;
 		}
+		DBConnection.closeConnection();
+		return user;
 	}
 
 	public static User findWithID(String id) throws Exception {
@@ -120,6 +122,7 @@ public class UserMapper implements Mapper {
 			} else
 				throw new Exception("no user with this account find");
 		} 
+		DBConnection.closeConnection();
 		return user;
 	}
 

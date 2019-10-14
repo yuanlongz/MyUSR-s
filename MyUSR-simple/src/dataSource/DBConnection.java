@@ -8,6 +8,7 @@ public class DBConnection {
 	private static final String DB_CONNECTION = "jdbc:postgresql://localhost:5432/myusr";
 	private static final String DB_USER = "postgres";
 	private static final String DB_PASSWORD = "87807981";
+	private static Connection conn;
 	// private static final String DB_CONNECTION
 	// ="postgres://hljjogodtgfcci:fed44adf1778b0c71930ff909abd4d4e2fcaf95b02448e581d10841fdf00d8a9@ec2-54-235-96-48.compute-1.amazonaws.com:5432/dbcjvhfb6diug8";
 	// private static final String DB_CONNECTION =
@@ -43,15 +44,22 @@ public class DBConnection {
 
 	private static Connection getDBConnection() {
 		try {
-			Connection conn = DriverManager.getConnection(DB_CONNECTION,
-					DB_USER, DB_PASSWORD);
-			// System.out.println("DB Connection sucess!");
-			return conn;
+			conn = DriverManager.getConnection(DB_CONNECTION, DB_USER,
+					DB_PASSWORD);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// System.out.println("DB Connection problem");
-		return null;
+
+		return conn;
+	}
+
+	public static void closeConnection() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

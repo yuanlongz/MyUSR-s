@@ -29,6 +29,7 @@ public class ItemMapper implements Mapper {
 		sqlStatement = DBConnection.prepare(delItemWithNSS);
 		sqlStatement.setString(1, name);
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 	
 	@Override
@@ -39,6 +40,7 @@ public class ItemMapper implements Mapper {
 		sqlStatement.setString(1, item.getName());
 		sqlStatement.setString(2, item.getUnitPrice());
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 
 	@Override
@@ -49,27 +51,29 @@ public class ItemMapper implements Mapper {
 		sqlStatement.setString(1, item.getUnitPrice());
 		sqlStatement.setString(2, item.getName());
 		sqlStatement.execute();
+		DBConnection.closeConnection();
 	}
 
 	public static String findPrice(String name) throws Exception {
-		Item result = map.getWithN(name);
-		if (result == null) {
+		Item item = map.getWithN(name);
+		String result;
+		if (item == null) {
 			PreparedStatement sqlStatement = null;
 			ResultSet rs = null;
 			sqlStatement = DBConnection.prepare(findItemWithNSS);
 			sqlStatement.setString(1, name);
 			rs = sqlStatement.executeQuery();
 			if (rs.next()) {
-				return rs.getString("unit_price");
+				result = rs.getString("unit_price");
 			} else
 				throw new Exception("no such item exist in the DB");
 		} else {
 			// TODO: test marker
 			System.out.println("ID map used to find item with name");
 		}
-
-		return result.getUnitPrice();
+		DBConnection.closeConnection();
+		result = item.getUnitPrice();
+		return result;
+		
 	}
-
-	
 }

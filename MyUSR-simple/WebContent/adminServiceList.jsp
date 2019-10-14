@@ -147,12 +147,21 @@ body {
 		ArrayList<Service> serviceList = new ArrayList<Service>();
 		if (Session.checkSession(request, response)) {
 			user = (Admin) User.getUserById(Session.getUserId(session));
-			serviceList = user.getServiceList();
+			//serviceList = user.getServiceList();
 		}
 	%>
-	<h2>Onging Service List</h2>
+	<h2>Service List</h2>
 	<hr />
 	<br />
+	<div>
+	<form>
+	<input type="radio" name="view" value="All" checked > All<br>
+	<input type="radio" name="view" value="Ongoing"> Ongoing<br>
+  	<input type="radio" name="view" value="Completed"> Completed<br>
+  	<input type="submit" value="Refresh">
+  	</form>
+  
+	</div>
 	<div class='container'>
 		<table class="tg">
 			<tr>
@@ -168,6 +177,14 @@ body {
 				<th class="tg-hmp3">Action</th>
 			</tr>
 			<%
+			String option = request.getParameter("view");
+			if(option != null &&option.equals("Ongoing")) {
+				serviceList = user.getServiceList();
+			}else if(option != null && option.equals("Completed")) {
+				serviceList = Service.findByStatus(ServiceStatus.COMPLETE);
+			}else {
+				serviceList = Service.findAll();
+			}
 				for (Service service : serviceList) {
 					//record service_id
 					session.setAttribute(Session.Target_ATTRIBUTE_ID, service.getServiceID());

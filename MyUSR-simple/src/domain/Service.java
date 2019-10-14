@@ -7,7 +7,7 @@ import dataSource.ItemMapper;
 import dataSource.MapperFactory;
 import dataSource.ServiceMapper;
 
-public class Service implements DomainObject{
+public class Service implements DomainObject {
 	private ServiceMapper mapper;
 	private static final int COST = 50;
 	private String serviceID, userID, address, description, bill;
@@ -175,7 +175,7 @@ public class Service implements DomainObject{
 		}
 		return null;
 	}
-	
+
 	public static ArrayList<Service> findByStatus(ServiceStatus status) {
 		try {
 			return ServiceMapper.findWithServiceStatus(status);
@@ -194,6 +194,19 @@ public class Service implements DomainObject{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static ArrayList<Service> findAll() {
+		ArrayList<Service> result = new ArrayList<Service>();
+		for (ServiceStatus status : ServiceStatus.values()) {
+			try {
+
+				result.addAll(ServiceMapper.findWithServiceStatus(status));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 
 	public String getServiceID() {
